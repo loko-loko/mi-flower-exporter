@@ -14,7 +14,13 @@ setup(
     ],
     packages=["mi_flower_exporter"],
     include_package_data=True,
-    install_requires=["loguru", "pyyaml", "prometheus_client", "btlewrap", "miflora"],
+    install_requires=[
+        "btlewrap==0.0.8",
+        "loguru==0.5.0",
+        "miflora==0.6",
+        "prometheus-client==0.7.1",
+        "PyYAML==5.3.1"
+    ],
     entry_points={
         "console_scripts": [
             "mi-flower-exporter=mi_flower_exporter.__main__:main",
