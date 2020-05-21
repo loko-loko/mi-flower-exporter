@@ -1,26 +1,23 @@
 import socket
-from loguru import logger
+from loguru import logger as log
 
 from prometheus_client import Info, start_http_server
 
-import mi_flower_exporter
+from mi_flower_exporter import __version__ as VERSION
 
 def init_http_server(port):
     hostname = socket.gethostname()
-    logger.debug(f"Start Prometheus web server: {hostname}:{port} ..")
-    
+    log.debug(f"Start Prometheus web server: 0.0.0.0:{port} (Host:{hostname}) ..")
     start_http_server(port)
-
     prometheus_info = Info(
-        'mi_flower_exporter',
-        'Mi-Flower Prometheus exporter'
+        "mi_flower_exporter",
+        "Mi-Flower Prometheus exporter"
     )
     prometheus_info.info({
-        'version': mi_flower_exporter.__version__,
-        'running_on': hostname
+        "version": VERSION,
+        "running_on": hostname
     })
-
-    logger.info(f"Prometheus web server started: {hostname}:{port}")
+    log.info(f"Prometheus web server started: {hostname}:{port}")
 
 class CollectMany:
 

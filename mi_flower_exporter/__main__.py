@@ -7,18 +7,18 @@ from yaml import safe_load
 from time import sleep
 from string import Template
 
-from loguru import logger
+from loguru import logger as log
 from prometheus_client import REGISTRY
 
 from mi_flower_exporter.collector import FlowerCollector, DataDumpCollect
 from mi_flower_exporter.prometheus import CollectMany, init_http_server
-
+from mi_flower_exporter.utils import get_config, create_dump_path, get_flowers_to_collected
 
 
 # Default vars
 _REFRESH_INTERVAL = 1800
 _EXPORTER_PORT = 9250
-_DUMP_PATH = "/tmp"
+_DUMP_PATH = "/tmp/mi_flower_exporter.cache"
 
 
 def arg_parser():
@@ -56,20 +56,6 @@ def arg_parser():
     return parser.parse_args()
 
 
-def get_config(config_file):
-    logger.debug(f"Get yaml config file: {config_file}")
-    try:
-        with open(config_file) as f:
-            fy = safe_load(f)
-        return fy['configs']
-    except TypeError as e:
-        logger.error(f'The config file cannot be parsed: {e}')
-        exit(1)
-    except FileNotFoundError as e:
-        logger.error(f'The config file was not found: {e}')
-        exit(1)
-
-
 def main():
     error_msg = "Collector could not run"
     collector_pid = os.getpid()
@@ -78,24 +64,28 @@ def main():
     args = arg_parser()
     # init logger
     log_level = "DEBUG" if args.debug else "INFO"
-    logger.remove()
-    logger.add(
+    log.remove()
+    log.add(
         stderr,
         level=log_level,
         format="{time:YYYY/MM/DD HH:mm:ss}  {level:<7} - {message}"
     )
     # Check pid
     if os.path.isfile(pid_file):
-        logger.error(f"{error_msg}: Existing pid file is present")
+        log.error(f"{error_msg}: Existing pid file is present")
         exit(1)
     # Get flower config
     config = get_config(args.config)
-    flowers = [f for f, v in config.items() if v["enabled"]]
+    # Generate dump file template path
+    create_dump_path(args.dump_path)
+    f_template = Template(
+        os.path.join(args.dump_path, f"$name.{collector_pid}.dump")
+    )
+    # Get flowers to collect
+    flowers = get_flowers_to_collected(config)
     # Init prometheus http server
-    logger.info(f"Mi-Flower Exporter Start (PID:{collector_pid}) ..")
+    log.info(f"Mi-Flower Exporter Start (PID:{collector_pid}) ..")
     init_http_server(args.port)
-    # Generate dump file template
-    f_template = Template(f"{args.dump_path}/mi_flora_exporter_$name.{collector_pid}.cache")
     # Start data collect with interval
     for flower in flowers:
         data_collect = DataDumpCollect(
@@ -106,7 +96,7 @@ def main():
         )
         data_collect.start()
     # Wait dump files creation
-    logger.debug("Wait for first dump file creation ..")
+    log.debug("Wait for first dump file creation ..")
     sleep(2)
     # Start flower prometheus collector
     collectors = []
@@ -118,7 +108,7 @@ def main():
         )
         collectors.append(collector)
     REGISTRY.register(CollectMany(collectors))
-    logger.info(f"Exporting Completed")
+    log.info(f"Exporting Completed")
 
     while True:
         sleep(30)
