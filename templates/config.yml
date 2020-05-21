@@ -1,0 +1,7 @@
+configs:
+  Flower_ext_1:
+    mac: "C4:00:00:00:00:01"
+    enabled: True
+  Flower_ext_2:
+    mac: "C4:00:00:00:00:02"
+    enabled: True
