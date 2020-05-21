@@ -4,9 +4,8 @@ from os import rename
 from prometheus_client.core import GaugeMetricFamily, CollectorRegistry
 from loguru import logger as log
 from threading import Thread
-
 from btlewrap import GatttoolBackend
-from .miflora.miflora_poller import MiFloraPoller
+from miflora.miflora_poller import MiFloraPoller
 
 from mi_flower_exporter.utils import write_dump_data_to_file, read_dump_data_from_file
 
@@ -38,6 +37,7 @@ class DataDumpCollect(Thread):
             except Exception as e:
                 log.error(f"Error getting data for {self.name}: {e}")
             else:
+                log.info(f"Done getting data for {self.name}")
                 # Update data with new value if collect OK
                 data.update({
                     "collect": 1,
