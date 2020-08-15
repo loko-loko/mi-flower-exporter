@@ -1,0 +1,18 @@
+[Unit]
+Description=Mi Flower Exporter
+After=network.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/bin/mi-flower-exporter --config /etc/mi-flower-exporter/config.yml
+Restart=always
+RestartSec=30s
+StartLimitInterval=0
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=mi-flower-exporter
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
