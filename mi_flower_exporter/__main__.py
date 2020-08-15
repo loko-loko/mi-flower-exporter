@@ -16,9 +16,10 @@ from mi_flower_exporter.utils import get_config, create_dump_path, get_flowers_t
 
 
 # Default vars
-_REFRESH_INTERVAL = 1800
-_EXPORTER_PORT = 9250
-_DUMP_PATH = "/tmp/mi_flower_exporter.cache"
+LOG_PATH = "/var/log/mi-flower-exporter"
+REFRESH_INTERVAL = 1800
+EXPORTER_PORT = 9250
+DUMP_PATH = "/tmp/mi_flower_exporter.cache"
 
 
 def arg_parser():
@@ -33,19 +34,29 @@ def arg_parser():
         "-p",
         "--port",
         type=int,
-        default=_EXPORTER_PORT,
-        help=f"Port for the webserver scraped by Prometheus [Default: {_EXPORTER_PORT}]"
+        default=EXPORTER_PORT,
+        help=f"Port for the webserver scraped by Prometheus [Default: {EXPORTER_PORT}]"
+    )
+    parser.add_argument(
+        "--log-path",
+        default=LOG_PATH,
+        help=f"Exporter log path [Default: {LOG_PATH}]"
     )
     parser.add_argument(
         "--refresh-interval",
         type=int,
-        default=_REFRESH_INTERVAL,
-        help=f"Refresh interval in seconds for data collect [Default: {_REFRESH_INTERVAL}]"
+        default=REFRESH_INTERVAL,
+        help=f"Refresh interval in seconds for data collect [Default: {REFRESH_INTERVAL}]"
     )
     parser.add_argument(
         "--dump-path",
-        default=_DUMP_PATH,
-        help=f"Path for the dumps [Default: {_DUMP_PATH}]"
+        default=DUMP_PATH,
+        help=f"Path for the dumps [Default: {DUMP_PATH}]"
+    )
+    parser.add_argument(
+        "--logs",
+        action="store_true",
+        help="Enable writing logs to a file"
     )
     parser.add_argument(
         "-d",
@@ -62,14 +73,26 @@ def main():
     pid_file = "/var/run/mi-flower-exporter.pid"
     # Get args
     args = arg_parser()
-    # init logger
+    # Init logger
     log_level = "DEBUG" if args.debug else "INFO"
+    formatter="{time:YYYY/MM/DD HH:mm:ss}  {level:<7} - {message}"
     log.remove()
     log.add(
         stderr,
         level=log_level,
-        format="{time:YYYY/MM/DD HH:mm:ss}  {level:<7} - {message}"
+        format=formatter
     )
+    if args.logs:
+        if not os.path.exists:
+            print(f"ERROR: No log path found from {args.log_path}")
+            exit(1)
+        log_file = os.path.join(args.log_path, "exporter.log")
+        log.add(
+            log_file,
+            level=log_level,
+            format=formatter,
+            rotation="5 MB"
+        )
     # Check pid
     if os.path.isfile(pid_file):
         log.error(f"{error_msg}: Existing pid file is present")
