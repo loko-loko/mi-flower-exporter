@@ -4,9 +4,11 @@ MAINTAINER L.Koné (loko-loko@github.com)
 ENV PYTHONUNBUFFERED 1
 WORKDIR /exporter
 
-# Install bluetooth lib
+# Install bluetooth and systemd
 RUN apt-get update \
-    && apt-get install -y bluez \
+    && apt-get install -y \
+        dbus \
+        bluez \
     # Create temporary path
     && mkdir /tmp/.pkg
 
@@ -21,3 +23,4 @@ RUN pip install /tmp/.pkg && rm -fr /tmp/.pkg \
 
 # Run entrypoint
 ENTRYPOINT ["/exporter/entrypoint.sh"]
+
