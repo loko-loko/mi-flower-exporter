@@ -92,3 +92,29 @@ Starting bluetooth: bluetoothd.
 2020/05/21 14:36:09  INFO    - Done getting data for Flower_ext_1
 2020/05/21 14:36:13  INFO    - Done getting data for Flower_ext_2
 ```
+
+## Metrics
+
+See a table with all available metrics:
+
+|Name |Description |Tags |Example
+|--- |--- |--- |---
+|mi_flower_collect| Collect status| mac, name| `1.0`
+|mi_flower_poll_time| Poll time in `seconds`| mac, name| `2.6992740631103516`
+|mi_flower_battery| Battery level| mac, name| `99.0`
+|mi_flower_conductivity| Conductivity level| mac, name| `298.0`
+|mi_flower_light| Light level in `lux`| mac, name| `17.0`
+|mi_flower_moisture| Moisture level| mac, name| `54.0`
+|mi_flower_temperature| Temperature in `celsius`| mac, name| `54.0`
+
+
+Output example:
+```
+mi_flower_collect{mac="C4:6C:9E:12:11:1F",name="my-flower"} 1.0
+mi_flower_poll_time{mac="C4:6C:9E:12:11:1F",name="my-flower"} 2.24057789556204
+mi_flower_battery{mac="C4:6C:9E:12:11:1F",name="my-flower"} 99.0
+mi_flower_conductivity{mac="C4:6C:9E:12:11:1F",name="my-flower"} 102.0
+mi_flower_light{mac="C4:6C:9E:12:11:1F",name="my-flower"} 8956.0
+mi_flower_moisture{mac="C4:6C:9E:12:11:1F",name="my-flower"} 28.0
+mi_flower_temperature{mac="C4:6C:9E:12:11:1F",name="my-flower"} 19.2
+```
