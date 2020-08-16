@@ -12,7 +12,7 @@ from mi_flower_exporter.utils import write_dump_data_to_file
 from mi_flower_exporter.utils import read_dump_data_from_file
 
 
-_BLT_BACKEND = GatttoolBackend
+BLT_BACKEND = GatttoolBackend
 
 
 class DataDumpCollect(Thread):
@@ -58,7 +58,7 @@ class DataDumpCollect(Thread):
     @staticmethod
     def _poll_data(name, mac):
         log.info(f"Getting data from {name} [{mac}]")
-        poller = MiFloraPoller(mac=mac, backend=_BLT_BACKEND)
+        poller = MiFloraPoller(mac=mac, backend=BLT_BACKEND)
         data = {
             "temperature": float(poller.parameter_value("temperature")),
             "moisture": int(poller.parameter_value("moisture")),

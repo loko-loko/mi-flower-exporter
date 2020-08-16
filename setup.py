@@ -15,7 +15,7 @@ setup(
     packages=["mi_flower_exporter"],
     include_package_data=True,
     install_requires=[
-        "btlewrap==0.0.8",
+        "btlewrap==0.0.10",
         "loguru==0.5.0",
         "miflora==0.6",
         "prometheus-client==0.7.1",
