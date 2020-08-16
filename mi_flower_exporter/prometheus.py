@@ -1,9 +1,11 @@
 import socket
 from loguru import logger as log
 
-from prometheus_client import Info, start_http_server
+from prometheus_client import Info
+from prometheus_client import start_http_server
 
 from mi_flower_exporter import __version__ as VERSION
+
 
 def init_http_server(port):
     hostname = socket.gethostname()

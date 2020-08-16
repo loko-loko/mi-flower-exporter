@@ -1,13 +1,15 @@
 from time import time, sleep
 from os import rename
 
-from prometheus_client.core import GaugeMetricFamily, CollectorRegistry
+from prometheus_client.core import GaugeMetricFamily
+from prometheus_client.core import CollectorRegistry
 from loguru import logger as log
 from threading import Thread
 from btlewrap import GatttoolBackend
 from miflora.miflora_poller import MiFloraPoller
 
-from mi_flower_exporter.utils import write_dump_data_to_file, read_dump_data_from_file
+from mi_flower_exporter.utils import write_dump_data_to_file
+from mi_flower_exporter.utils import read_dump_data_from_file
 
 
 _BLT_BACKEND = GatttoolBackend

@@ -10,9 +10,13 @@ from string import Template
 from loguru import logger as log
 from prometheus_client import REGISTRY
 
-from mi_flower_exporter.collector import FlowerCollector, DataDumpCollect
-from mi_flower_exporter.prometheus import CollectMany, init_http_server
-from mi_flower_exporter.utils import get_config, create_dump_path, get_flowers_to_collected
+from mi_flower_exporter.utils import get_config
+from mi_flower_exporter.utils import create_dump_path
+from mi_flower_exporter.utils import get_flowers_to_collected
+from mi_flower_exporter.collector import FlowerCollector
+from mi_flower_exporter.collector import DataDumpCollect
+from mi_flower_exporter.prometheus import CollectMany
+from mi_flower_exporter.prometheus import init_http_server
 
 
 # Default vars
