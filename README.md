@@ -77,8 +77,6 @@ Once container is running, you can check data with the following command:
 curl 127.0.0.1:9250
 ```
 
-### Logs
-
 You can check exporter status with `docker logs` command.
 
 Example:
