@@ -1,18 +1,19 @@
-from time import time, sleep
 from os import rename
+from time import time, sleep
+from threading import Thread
 
 from prometheus_client.core import GaugeMetricFamily
 from prometheus_client.core import CollectorRegistry
 from loguru import logger as log
-from threading import Thread
-from btlewrap import GatttoolBackend
+from btlewrap.bluepy import BluepyBackend
+
 from miflora.miflora_poller import MiFloraPoller
 
 from mi_flower_exporter.utils import write_dump_data_to_file
 from mi_flower_exporter.utils import read_dump_data_from_file
 
 
-BLT_BACKEND = GatttoolBackend
+BLT_BACKEND = BluepyBackend
 
 
 class DataDumpCollect(Thread):
