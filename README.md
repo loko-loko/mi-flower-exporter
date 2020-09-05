@@ -97,15 +97,15 @@ Starting bluetooth: bluetoothd.
 
 See a table with all available metrics:
 
-|Name |Description |Tags |Example
-|--- |--- |--- |---
-|mi_flower_collect| Collect status| mac, name| `1.0`
-|mi_flower_poll_time| Poll time in `seconds`| mac, name| `2.6992740631103516`
-|mi_flower_battery| Battery level| mac, name| `99.0`
-|mi_flower_conductivity| Conductivity level| mac, name| `298.0`
-|mi_flower_light| Light level in `lux`| mac, name| `17.0`
-|mi_flower_moisture| Moisture level| mac, name| `54.0`
-|mi_flower_temperature| Temperature in `celsius`| mac, name| `54.0`
+|Name |Description |Labels
+|--- |--- |---
+|`mi_flower_collect`| Collect status| mac, name
+|`mi_flower_poll_time`| Poll time in `seconds`| mac, name
+|`mi_flower_battery`| Battery level| mac, name
+|`mi_flower_conductivity`| Conductivity level| mac, name
+|`mi_flower_light`| Light level in `lux`| mac, name
+|`mi_flower_moisture`| Moisture level| mac, name
+|`mi_flower_temperature`| Temperature in `celsius`| mac, name
 
 
 Output example:
