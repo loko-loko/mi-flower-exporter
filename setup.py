@@ -20,7 +20,7 @@ setup(
         "loguru==0.5.0",
         "miflora==0.6",
         "prometheus-client==0.7.1",
-        "PyYAML==5.3.1"
+        "PyYAML==5.4"
     ],
     entry_points={
         "console_scripts": [
